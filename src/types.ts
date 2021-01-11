@@ -1,0 +1,16 @@
+import { Request } from "express";
+
+export interface RequestWithUser extends Request {
+  user?: {
+    user: User;
+  };
+}
+
+export interface User {
+  client_id: number;
+  name: string;
+  surname: string;
+  email: string;
+  created_on: string;
+  last_login: null | string;
+}
