@@ -10,3 +10,12 @@ export const poll = new Poll({
   port: parseInt(process.env.DB_PORT!),
   database: process.env.DATABASE
 });
+
+export const getClient = async () => {
+  try {
+    const client = await poll.connect();
+    return client;
+  } catch (error) {
+    return null;
+  }
+};
