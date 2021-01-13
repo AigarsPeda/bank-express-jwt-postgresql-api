@@ -2,11 +2,11 @@ import { Request } from "express";
 
 export interface RequestWithUser extends Request {
   user?: {
-    user: User;
+    user: IUser;
   };
 }
 
-export interface User {
+export interface IUser {
   client_id: number;
   name: string;
   surname: string;
