@@ -38,17 +38,17 @@ CREATE TABLE transactions(
 CREATE TABLE loans (
   loan_id serial PRIMARY KEY,
   loan_amount NUMERIC (10, 2) NULL,
+  retun_amount NUMERIC (10, 2) NULL,
+  is_paid BOOLEAN DEFAULT FALSE,
   transaction_date TIMESTAMP NOT NULL,
+  loan_returned TIMESTAMP NULL,
   lender_account_id BIGINT NOT NULL,
+  reamining_amount_amount NUMERIC (10, 2) NULL,
   FOREIGN KEY(lender_account_id) REFERENCES accounts(account_id),
   borrower_account_id BIGINT NOT NULL,
   FOREIGN KEY(borrower_account_id) REFERENCES accounts(account_id)
 );
 
--- TODO: add column with returned amoutn
--- TODO: add column with returned date
--- TODO: add column with reamining amount
--- TODO: add column with is_paid
 
 
 ALTER TABLE loans
@@ -56,3 +56,15 @@ RENAME COLUMN amount TO loan_amount;
 
 ALTER TABLE accounts
 ADD lender BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE loans
+ADD retun_amount NUMERIC (10, 2) NULL;
+
+ALTER TABLE loans
+ADD is_paid BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE loans
+ADD loan_returned TIMESTAMP NULL;
+
+ALTER TABLE loans
+ADD reamining_amount_amount NUMERIC (10, 2) NULL;
