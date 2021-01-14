@@ -26,11 +26,11 @@ app.post("/signup", createClient);
 app.post("/login", loginClient);
 
 // ROUTES WITH AUTHORIZATION
-app.get("/account", authMiddleware, getClientsAccounts);
-app.post("/account", authMiddleware, createClientsAccount);
-app.post("/deposit/:account_id", authMiddleware, deposit);
-app.post("/withdraw/:account_id", authMiddleware, withdraw);
-app.post("/loan/:account_id", authMiddleware, loan);
+app.get("/cards", authMiddleware, getClientsAccounts);
+app.post("/cards", authMiddleware, createClientsAccount);
+app.post("/deposit/:card_id", authMiddleware, deposit);
+app.post("/withdraw/:card_id", authMiddleware, withdraw);
+app.post("/loan/:card_id", authMiddleware, loan);
 
 // transfers
 // transactions
