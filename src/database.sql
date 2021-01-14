@@ -13,9 +13,9 @@ CREATE TABLE clients (
 );
 
 -- account table
-CREATE TABLE accounts (
-  account_id serial PRIMARY KEY,
-  account_no BIGINT UNIQUE NOT NULL,
+CREATE TABLE cards (
+  card_id serial PRIMARY KEY,
+  card_no BIGINT UNIQUE NOT NULL,
   bank_name VARCHAR(50) NOT NULL,
   total_balance NUMERIC (10, 2) NOT NULL DEFAULT 0,
   client_id INTEGER NOT NULL,
@@ -30,8 +30,8 @@ CREATE TABLE transactions(
     withdraw_amount NUMERIC (10, 2) NULL,
     deposit_amount NUMERIC (10, 2) NULL,
     balance NUMERIC (10, 2) NOT NULL DEFAULT 0,
-    account_id BIGINT NOT NULL,
-    FOREIGN KEY(account_id) REFERENCES accounts(account_id)
+    card_id BIGINT NOT NULL,
+    FOREIGN KEY(card_id) REFERENCES cards(card_id)
 );
 
 -- loans table
@@ -42,11 +42,11 @@ CREATE TABLE loans (
   is_paid BOOLEAN DEFAULT FALSE,
   loan_taken_date TIMESTAMP NOT NULL,
   loan_returned_date TIMESTAMP NULL,
-  lender_account_id BIGINT NOT NULL,
+  lender_card_id BIGINT NOT NULL,
   remaining_loan_amount NUMERIC (10, 2) NULL,
-  FOREIGN KEY(lender_account_id) REFERENCES accounts(account_id),
-  borrower_account_id BIGINT NOT NULL,
-  FOREIGN KEY(borrower_account_id) REFERENCES accounts(account_id)
+  FOREIGN KEY(lender_card_id) REFERENCES cards(card_id),
+  borrower_card_id BIGINT NOT NULL,
+  FOREIGN KEY(borrower_card_id) REFERENCES cards(card_id)
 );
 
 ALTER TABLE loans
