@@ -40,8 +40,8 @@ CREATE TABLE loans (
   loan_amount NUMERIC (10, 2) NULL,
   retun_amount NUMERIC (10, 2) NULL,
   is_paid BOOLEAN DEFAULT FALSE,
-  transaction_date TIMESTAMP NOT NULL,
-  loan_returned TIMESTAMP NULL,
+  loan_taken_date TIMESTAMP NOT NULL,
+  loan_returned_date TIMESTAMP NULL,
   lender_account_id BIGINT NOT NULL,
   remaining_loan_amount NUMERIC (10, 2) NULL,
   FOREIGN KEY(lender_account_id) REFERENCES accounts(account_id),
@@ -49,10 +49,8 @@ CREATE TABLE loans (
   FOREIGN KEY(borrower_account_id) REFERENCES accounts(account_id)
 );
 
-reamining_amount_amount
-
 ALTER TABLE loans
-RENAME COLUMN reamining_loan_amount TO remaining_loan_amount;
+RENAME COLUMN transaction_date TO loan_taken_date;
 
 ALTER TABLE accounts
 ADD lender BOOLEAN DEFAULT FALSE;
