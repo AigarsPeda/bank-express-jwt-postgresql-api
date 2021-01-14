@@ -1,8 +1,8 @@
 import cors from "cors";
 import express from "express";
-import { createClientsAccount } from "./controllers/account/createClientsAccount";
+import { createClientsCards } from "./controllers/account/createClientsCards";
 import { deposit } from "./controllers/account/deposit";
-import { getClientsAccounts } from "./controllers/account/getClientsAccounts";
+import { getClientsCards } from "./controllers/account/getClientsCards";
 import { loan } from "./controllers/account/loan";
 import { withdraw } from "./controllers/account/withdraw";
 import { createClient } from "./controllers/auth/createClient";
@@ -26,8 +26,8 @@ app.post("/signup", createClient);
 app.post("/login", loginClient);
 
 // ROUTES WITH AUTHORIZATION
-app.get("/cards", authMiddleware, getClientsAccounts);
-app.post("/cards", authMiddleware, createClientsAccount);
+app.get("/cards", authMiddleware, getClientsCards);
+app.post("/cards", authMiddleware, createClientsCards);
 app.post("/deposit/:card_id", authMiddleware, deposit);
 app.post("/withdraw/:card_id", authMiddleware, withdraw);
 app.post("/loan/:card_id", authMiddleware, loan);
