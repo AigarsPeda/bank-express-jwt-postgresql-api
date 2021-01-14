@@ -15,10 +15,11 @@ CREATE TABLE clients (
 -- account table
 CREATE TABLE accounts (
   account_id serial PRIMARY KEY,
-  account_no BIGINT NOT NULL,
+  account_no BIGINT UNIQUE NOT NULL,
   bank_name VARCHAR(50) NOT NULL,
   total_balance NUMERIC (10, 2) NOT NULL DEFAULT 0,
   client_id INTEGER NOT NULL,
+  lender BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (client_id) REFERENCES clients (client_id)
 );
 
@@ -36,9 +37,22 @@ CREATE TABLE transactions(
 -- loans table
 CREATE TABLE loans (
   loan_id serial PRIMARY KEY,
-  amount BIGINT,
+  loan_amount NUMERIC (10, 2) NULL,
   transaction_date TIMESTAMP NOT NULL,
-  FOREIGN KEY (lender) REFERENCES client (client_id),
-  FOREIGN KEY (borrower) REFERENCES client (client_id),
-  FOREIGN KEY(account_id) REFERENCES accounts(account_id)
+  lender_account_id BIGINT NOT NULL,
+  FOREIGN KEY(lender_account_id) REFERENCES accounts(account_id),
+  borrower_account_id BIGINT NOT NULL,
+  FOREIGN KEY(borrower_account_id) REFERENCES accounts(account_id)
 );
+
+-- TODO: add column with returned amoutn
+-- TODO: add column with returned date
+-- TODO: add column with reamining amount
+-- TODO: add column with is_paid
+
+
+ALTER TABLE loans
+RENAME COLUMN amount TO loan_amount;
+
+ALTER TABLE accounts
+ADD lender BOOLEAN DEFAULT FALSE;
