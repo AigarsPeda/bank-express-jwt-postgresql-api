@@ -28,9 +28,11 @@ export const loginClient = async (req: Request, res: Response) => {
     // compare password entered and what is saved in db
     if (await argon2.verify(loginUser.rows[0].password, password)) {
       const last_login = new Date();
+
+      // updating to save login date
       const updatedClient = await poll.query(
         `UPDATE clients SET last_login = $1 WHERE email = $2 
-         RETURNING name, surname, email, created_on, last_login, client_id, clients_total_balance
+         RETURNING name, surname, email, created_on, client_id
         `,
         [last_login, email.toLowerCase()]
       );

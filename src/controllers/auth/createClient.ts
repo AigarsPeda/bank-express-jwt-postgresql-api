@@ -7,7 +7,6 @@ import { validSignupUser } from "../../utils/validUser";
 export const createClient = async (req: Request, res: Response) => {
   try {
     const { email, password, name, surname } = req.body;
-
     const created_on = new Date();
 
     // validating email, password, name and surname
@@ -24,7 +23,7 @@ export const createClient = async (req: Request, res: Response) => {
     const newUser = await poll.query(
       ` INSERT INTO clients (name, surname, email, password, created_on, last_login) 
         VALUES($1, $2, $3, $4, $5, $5) 
-        RETURNING name, surname, email, created_on, last_login, client_id, clients_total_balance
+        RETURNING name, surname, email, created_on, client_id
       `,
       [
         name.toLowerCase(),
