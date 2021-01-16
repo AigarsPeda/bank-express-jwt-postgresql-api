@@ -1,15 +1,15 @@
 import cors from "cors";
 import express from "express";
-import { postCard } from "./controllers/cards/postCard";
-import { postDeposit } from "./controllers/cards/postDeposit";
-import { getClientsCards } from "./controllers/cards/getClientsCards";
-import { getTransactions } from "./controllers/cards/getTransactions";
-import { postLoan } from "./controllers/cards/postLoan";
-import { postWithdraw } from "./controllers/cards/postWithdraw";
 import { createClient } from "./controllers/auth/createClient";
 import { loginClient } from "./controllers/auth/loginClient";
-import { authMiddleware } from "./middleware/authMiddleware";
+import { getClientsCards } from "./controllers/cards/getClientsCards";
 import { getLoans } from "./controllers/cards/getLoans";
+import { getTransactions } from "./controllers/cards/getTransactions";
+import { postCard } from "./controllers/cards/postCard";
+import { postDeposit } from "./controllers/cards/postDeposit";
+import { postLoan } from "./controllers/cards/postLoan";
+import { postWithdraw } from "./controllers/cards/postWithdraw";
+import { authMiddleware } from "./middleware/authMiddleware";
 
 const PORT = 8000;
 
