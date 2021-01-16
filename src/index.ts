@@ -1,11 +1,11 @@
 import cors from "cors";
 import express from "express";
-import { createClientsCards } from "./controllers/cards/createClientsCards";
-import { deposit } from "./controllers/cards/deposit";
+import { postClientsCards } from "./controllers/cards/postClientsCards";
+import { postDeposit } from "./controllers/cards/postDeposit";
 import { getClientsCards } from "./controllers/cards/getClientsCards";
 import { getTransactions } from "./controllers/cards/getTransactions";
-import { loan } from "./controllers/cards/loan";
-import { withdraw } from "./controllers/cards/withdraw";
+import { postLoan } from "./controllers/cards/postLoan";
+import { postWithdraw } from "./controllers/cards/postWithdraw";
 import { createClient } from "./controllers/auth/createClient";
 import { loginClient } from "./controllers/auth/loginClient";
 import { authMiddleware } from "./middleware/authMiddleware";
@@ -29,10 +29,10 @@ app.post("/login", loginClient);
 
 // ROUTES WITH AUTHORIZATION NEEDED
 app.get("/cards", authMiddleware, getClientsCards);
-app.post("/cards", authMiddleware, createClientsCards);
-app.post("/deposit/:card_id", authMiddleware, deposit);
-app.post("/withdraw/:card_id", authMiddleware, withdraw);
-app.post("/loan/:card_id", authMiddleware, loan);
+app.post("/cards", authMiddleware, postClientsCards);
+app.post("/deposit/:card_id", authMiddleware, postDeposit);
+app.post("/withdraw/:card_id", authMiddleware, postWithdraw);
+app.post("/loan/:card_id", authMiddleware, postLoan);
 
 // ROUTES WITH WITH AUTHORIZATION NEEDED AND POSSIBLE QUERIES
 // /transactions/:card_id?start_date=start_date&end_date=end_date
