@@ -38,7 +38,7 @@ CREATE TABLE transactions(
 CREATE TABLE loans (
   loan_id serial PRIMARY KEY,
   loan_amount NUMERIC (10, 2) NULL,
-  retun_amount NUMERIC (10, 2) NULL,
+  return_amount NUMERIC (10, 2) NULL,
   is_paid BOOLEAN DEFAULT FALSE,
   loan_taken_date TIMESTAMP NOT NULL,
   loan_returned_date TIMESTAMP NULL,
@@ -50,7 +50,7 @@ CREATE TABLE loans (
 );
 
 ALTER TABLE loans
-RENAME COLUMN transaction_date TO loan_taken_date;
+RENAME COLUMN retun_amount TO return_amount;
 
 ALTER TABLE accounts
 ADD lender BOOLEAN DEFAULT FALSE;
