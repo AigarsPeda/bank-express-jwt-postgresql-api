@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { postClientsCards } from "./controllers/cards/postClientsCards";
+import { postCard } from "./controllers/cards/postCard";
 import { postDeposit } from "./controllers/cards/postDeposit";
 import { getClientsCards } from "./controllers/cards/getClientsCards";
 import { getTransactions } from "./controllers/cards/getTransactions";
@@ -29,7 +29,7 @@ app.post("/login", loginClient);
 
 // ROUTES WITH AUTHORIZATION NEEDED
 app.get("/cards", authMiddleware, getClientsCards);
-app.post("/cards", authMiddleware, postClientsCards);
+app.post("/cards", authMiddleware, postCard);
 app.post("/deposit/:card_id", authMiddleware, postDeposit);
 app.post("/withdraw/:card_id", authMiddleware, postWithdraw);
 app.post("/loan/:card_id", authMiddleware, postLoan);
