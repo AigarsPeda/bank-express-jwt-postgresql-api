@@ -1,3 +1,4 @@
+import { updateLoan } from "./controllers/cards/updateLoan";
 import cors from "cors";
 import express from "express";
 import { createClient } from "./controllers/auth/createClient";
@@ -33,12 +34,13 @@ app.post("/cards", authMiddleware, postCard);
 app.post("/deposit/:card_id", authMiddleware, postDeposit);
 app.post("/withdraw/:card_id", authMiddleware, postWithdraw);
 app.post("/loan/:card_id", authMiddleware, postLoan);
+app.put("/loan/:loan_id", authMiddleware, updateLoan);
 
 // ROUTES WITH WITH AUTHORIZATION NEEDED AND POSSIBLE QUERIES
 // /transactions/:card_id?start_date=start_date&end_date=end_date
 app.get("/transactions/:card_id", authMiddleware, getTransactions);
 // /loans/:borrower_card_id?start_date=start_date&end_date=end_date
-app.get("/loans/:borrower_card_id", authMiddleware, getLoans);
+app.get("/loans/:card_id", authMiddleware, getLoans);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
