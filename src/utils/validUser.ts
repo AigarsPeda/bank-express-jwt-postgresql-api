@@ -13,14 +13,24 @@ export const validSignupUser = (
   const validSurname =
     typeof surname === "string" && surname.trim() !== "" && surname.length > 3;
 
-  return validEmail && validPassword && validUsername && validSurname;
+  return validPassword && validUsername && validSurname && validEmail;
 };
 
-export const validLoginUser = (email: string, password: string) => {
+export const validateEmail = (email: string) => {
   const validEmail =
-    typeof email === "string" && email.trim() !== "" && email.includes("@");
-  const validPassword =
-    typeof password === "string" && password.trim() !== "" && email.length > 5;
+    typeof email === "string" &&
+    email.trim() !== "" &&
+    email.includes("@") &&
+    email.length > 5;
 
-  return validEmail && validPassword;
+  return validEmail;
+};
+
+export const validLoginUser = (password: string) => {
+  const validPassword =
+    typeof password === "string" &&
+    password.trim() !== "" &&
+    password.length > 5;
+
+  return validPassword;
 };
