@@ -8,7 +8,9 @@ const Poll = pg.Pool;
 export const poll = new Poll({
   host: process.env.HOST,
   port: parseInt(process.env.DB_PORT!),
-  database: process.env.DATABASE
+  database: process.env.DATABASE,
+  user: process.env.USER,
+  password: process.env.PASSWORD
 });
 
 export const getClient = async () => {
