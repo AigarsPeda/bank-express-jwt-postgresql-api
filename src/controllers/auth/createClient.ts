@@ -2,16 +2,30 @@ import argon2 from "argon2";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { poll } from "../../db";
-import { validSignupUser } from "../../utils/validUser";
+import {
+  validateEmail,
+  validatePassword,
+  validSignupUser
+} from "../../utils/validUser";
 
 export const createClient = async (req: Request, res: Response) => {
   try {
     const { email, password, name, surname } = req.body;
     const created_on = new Date();
 
-    // validating email, password, name and surname
-    if (!validSignupUser(email, password, name, surname)) {
-      return res.status(400).json({ error: "provide valid data" });
+    // validating name and surname
+    if (!validSignupUser(name, surname)) {
+      return res.status(400).json({ error: "provide valid name / surname" });
+    }
+
+    // validating email
+    if (!validateEmail(email)) {
+      return res.status(400).json({ error: "provide valid email" });
+    }
+
+    // validating password
+    if (!validatePassword(password)) {
+      return res.status(400).json({ error: "provide valid password" });
     }
 
     // hash password
