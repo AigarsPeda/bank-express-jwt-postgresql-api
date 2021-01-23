@@ -15,27 +15,50 @@ export const getTransactions = async (req: RequestWithUser, res: Response) => {
       [parseInt(card_id), user.client_id]
     );
 
+    // params 1 + all ?
+
+    // TODO: how to get all transactions without owner
+    // client transactions
+    // const allTransactions = await poll.query(
+    //   `SELECT to_char(transaction_date, 'DD-MM-YYYY')
+    //    AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id
+    //    FROM transactions WHERE card_id =
+    //    (select client_id FROM cards WHERE client_id = $1 LIMIT 1)
+    //   `,
+    //   [owner.rows[0].card_id]
+    // );
+    const allTransactions = await poll.query(
+      `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
+       AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
+       FROM transactions WHERE card_id = 
+       (select client_id FROM cards WHERE client_id = $1 LIMIT 1)
+      `,
+      [user.client_id]
+    );
+
+    console.log(allTransactions.rows);
+
     if (owner.rows.length) {
       let result: QueryResult<any>;
       try {
         if (start_date && end_date) {
           result = await poll.query(
-            `select to_char(transaction_date, 'DD-MM-YYYY') 
-             as formatted_date, withdraw_amount, deposit_amount, balance 
-             from transactions where 
+            `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
+             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
+             FROM transactions WHERE 
              card_id=$1 
-             and to_char(transaction_date, 'DD-MM-YYYY') 
-             between $2 and $3 order by transaction_date desc
+             AND to_char(transaction_date, 'DD-MM-YYYY') 
+             between $2 and $3 ORDER BY transaction_date DESC
             `,
             [card_id, start_date, end_date]
           );
         } else {
           result = await poll.query(
-            `select to_char(transaction_date, 'DD-MM-YYYY') 
-             as formatted_date, withdraw_amount, deposit_amount, balance 
-             from transactions where 
+            `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
+             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
+             FROM transactions WHERE 
              card_id=$1 
-             order by transaction_date desc
+             ORDER BY transaction_date DESC
             `,
             [card_id]
           );
