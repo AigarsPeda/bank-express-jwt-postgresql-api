@@ -10,7 +10,10 @@ export const postDeposit = async (req: RequestWithUser, res: Response) => {
       await client.query("begin");
       const { user } = req.user;
       const { card_id } = req.params;
-      const { deposit_amount }: { deposit_amount: number } = req.body;
+      const {
+        deposit_amount,
+        deposit_description
+      }: { deposit_amount: number; deposit_description: string } = req.body;
 
       // deposit should be positive number
       if (deposit_amount <= 0) res.status(400).json("bad request");
@@ -25,11 +28,11 @@ export const postDeposit = async (req: RequestWithUser, res: Response) => {
       const total = total_balance + deposit_amount;
       const transaction_date = new Date();
       await client.query(
-        `insert into transactions(transaction_date, deposit_amount, card_id, balance) 
-           values($1,$2,$3,$4) 
+        `insert into transactions(transaction_date, deposit_amount, card_id, balance, deposit_description) 
+           values($1, $2, $3, $4, $5) 
            returning *
           `,
-        [transaction_date, deposit_amount, card_id, total]
+        [transaction_date, deposit_amount, card_id, total, deposit_description]
       );
 
       // adding to account total balance
