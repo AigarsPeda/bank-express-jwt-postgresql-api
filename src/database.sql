@@ -29,6 +29,8 @@ CREATE TABLE transactions(
     transaction_date TIMESTAMP NOT NULL,
     withdraw_amount NUMERIC (10, 2) NULL,
     deposit_amount NUMERIC (10, 2) NULL,
+    deposit_description VARCHAR(255),
+    withdraw_description VARCHAR(255),
     balance NUMERIC (10, 2) NOT NULL DEFAULT 0,
     card_id BIGINT NOT NULL,
     FOREIGN KEY(card_id) REFERENCES cards(card_id)
@@ -66,3 +68,5 @@ ADD loan_returned TIMESTAMP NULL;
 
 ALTER TABLE loans
 ADD reamining_loan_amount NUMERIC (10, 2) NULL;
+
+alter table transactions add withdraw_description varchar(255);
