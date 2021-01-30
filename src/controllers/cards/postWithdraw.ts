@@ -12,7 +12,10 @@ export const postWithdraw = async (req: RequestWithUser, res: Response) => {
 
       const { user } = req.user;
       const { card_id } = req.params;
-      const { withdraw_amount } = req.body;
+      const {
+        withdraw_amount,
+        withdraw_description
+      }: { withdraw_amount: number; withdraw_description: string } = req.body;
 
       // withdraw amount should be negative number
       if (withdraw_amount > 0) res.status(400).json("bad request");
@@ -22,19 +25,29 @@ export const postWithdraw = async (req: RequestWithUser, res: Response) => {
         [parseInt(card_id), user.client_id]
       );
 
+      // if thee are no results person who made request
+      // isn't account owner
+      if (!result.rows.length) res.status(401).json("unauthorized");
+
       const total_balance = +result.rows[0].total_balance;
 
       // check if client have necessary founds
       if (withdraw_amount <= total_balance) {
         const transaction_date = new Date();
-        const total = total_balance - withdraw_amount;
+        const total = total_balance - withdraw_amount * -1;
 
         await client.query(
-          `insert into transactions(transaction_date, withdraw_amount, card_id, balance) 
-             values($1,$2,$3,$4) 
+          `insert into transactions(transaction_date, withdraw_amount, card_id, balance, withdraw_description) 
+             values($1, $2, $3, $4, $5) 
              returning *
             `,
-          [transaction_date, withdraw_amount, card_id, total]
+          [
+            transaction_date,
+            withdraw_amount,
+            card_id,
+            total,
+            withdraw_description
+          ]
         );
 
         // withdraw from account total balance
