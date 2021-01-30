@@ -36,7 +36,7 @@ export const loginClient = async (req: Request, res: Response) => {
       // updating to save login date
       const updatedClient = await poll.query(
         `UPDATE clients SET last_login = $1 WHERE email = $2 
-         RETURNING name, surname, email, created_on, client_id
+         RETURNING name, surname, email, created_on, client_id, clients_total_balance
         `,
         [last_login, email.toLowerCase()]
       );
