@@ -7,7 +7,7 @@ export const getTransactions = async (req: RequestWithUser, res: Response) => {
   if (req.user) {
     const { user } = req.user;
     const { card_id } = req.params;
-    const { start_date, end_date } = req.query;
+    const { start_date, end_date, all } = req.query;
 
     // check who owns this card
     const owner = await poll.query(
@@ -15,28 +15,16 @@ export const getTransactions = async (req: RequestWithUser, res: Response) => {
       [parseInt(card_id), user.client_id]
     );
 
-    // params 1 + all ?
-
-    // TODO: how to get all transactions without owner
-    // client transactions
     // const allTransactions = await poll.query(
     //   `SELECT to_char(transaction_date, 'DD-MM-YYYY')
-    //    AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id
+    //    AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id, card_id, deposit_description,  withdraw_description
     //    FROM transactions WHERE card_id =
     //    (select client_id FROM cards WHERE client_id = $1 LIMIT 1)
     //   `,
-    //   [owner.rows[0].card_id]
+    //   [user.client_id]
     // );
-    const allTransactions = await poll.query(
-      `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
-       AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
-       FROM transactions WHERE card_id = 
-       (select client_id FROM cards WHERE client_id = $1 LIMIT 1)
-      `,
-      [user.client_id]
-    );
 
-    console.log(allTransactions.rows);
+    // console.log(allTransactions.rows);
 
     if (owner.rows.length) {
       let result: QueryResult<any>;
@@ -44,21 +32,21 @@ export const getTransactions = async (req: RequestWithUser, res: Response) => {
         if (start_date && end_date) {
           result = await poll.query(
             `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
-             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
+             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id, card_id, deposit_description,  withdraw_description 
              FROM transactions WHERE 
              card_id=$1 
              AND to_char(transaction_date, 'DD-MM-YYYY') 
-             between $2 and $3 ORDER BY transaction_date DESC
+             between $2 and $3 ORDER BY transaction_date ASC
             `,
             [card_id, start_date, end_date]
           );
         } else {
           result = await poll.query(
             `SELECT to_char(transaction_date, 'DD-MM-YYYY') 
-             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id 
+             AS formatted_date, withdraw_amount, deposit_amount, balance, transaction_id, card_id, deposit_description,  withdraw_description 
              FROM transactions WHERE 
              card_id=$1 
-             ORDER BY transaction_date DESC
+             ORDER BY transaction_date ASC
             `,
             [card_id]
           );
